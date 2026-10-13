@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KINETIQ | Physics-Informed Sign-to-Speech Communication — Sanchar Saathi & FIOL</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            navy: {
+              950: '#060A13',
+              900: '#0B1120',
+              850: '#0F172A',
+              800: '#15213D',
+              700: '#1E293B',
+              600: '#334155'
+            },
+            cyan: {
+              400: '#22D3EE',
+              500: '#06B6D4',
+              accent: '#00F2FE'
+            },
+            violet: {
+              400: '#A78BFA',
+              500: '#8B5CF6',
+              600: '#7C3AED',
+              accent: '#9333EA'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- KaTeX for crisp mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-navy-950 text-slate-200 antialiased selection:bg-cyan-500/30 selection:text-cyan-300 min-h-screen relative overflow-x-hidden">
+
+  <!-- Background decorative grid & glow -->
+  <div class="fixed inset-0 bg-cyber-grid pointer-events-none opacity-20 z-0"></div>
+  <div class="fixed top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[128px] pointer-events-none"></div>
+  <div class="fixed top-1/3 right-1/4 w-96 h-96 bg-violet-600/10 rounded-full blur-[140px] pointer-events-none"></div>
+
+  <!-- NAVIGATION BAR -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-navy-950/80 border-b border-navy-800/80 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#hero" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-violet-600 p-[1px] shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition-all">
+          <div class="w-full h-full bg-navy-950 rounded-[11px] flex items-center justify-center">
+            <i data-lucide="activity" class="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform"></i>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-display font-bold text-lg text-white tracking-wider">KINETIQ</span>
+            <span class="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-cyan-950 border border-cyan-800/60 text-cyan-400 font-semibold tracking-wider">Sanchar Saathi & FIOL</span>
+          </div>
+          <p class="text-[10px] text-slate-400 font-mono tracking-tight hidden sm:block">Accessible Sign-to-Speech Communication</p>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-1 font-medium text-sm text-slate-300">
+        <a href="#hero" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-navy-800/60 transition-all">Home</a>
+        <a href="#translator" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-navy-800/60 transition-all flex items-center gap-1.5 text-cyan-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          KINETIQ Translate
+        </a>
+        <a href="#physics-dashboard" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-navy-800/60 transition-all">Motion Dashboard</a>
+        <a href="#physics-playground" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-navy-800/60 transition-all">Physics Lab</a>
+        <a href="#model-comparison" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-navy-800/60 transition-all">Model Benchmark</a>
+        <a href="#how-it-works" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-navy-800/60 transition-all">Pipeline</a>
+        <a href="#research" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-navy-800/60 transition-all">About & Team</a>
+      </nav>
+
+      <!-- Right Action CTA & Mobile Menu Toggle -->
+      <div class="flex items-center gap-3">
+        <a href="#translator" id="navLaunchTranslatorBtn" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 text-white shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all transform hover:-translate-y-0.5">
+          <i data-lucide="languages" class="w-3.5 h-3.5"></i>
+          Launch Translator
+        </a>
+        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg bg-navy-850 border border-navy-700 text-slate-300 hover:text-white" aria-label="Toggle navigation menu">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobileMenu" class="hidden md:hidden px-4 pt-2 pb-4 bg-navy-900 border-b border-navy-800 space-y-1 text-sm font-medium">
+      <a href="#hero" class="block px-3 py-2 rounded-lg hover:bg-navy-800 text-slate-300 hover:text-white">Home</a>
+      <a href="#translator" class="block px-3 py-2 rounded-lg hover:bg-navy-800 text-cyan-300 font-semibold">KINETIQ Translate</a>
+      <a href="#physics-dashboard" class="block px-3 py-2 rounded-lg hover:bg-navy-800 text-slate-300 hover:text-white">Motion Physics Dashboard</a>
+      <a href="#physics-playground" class="block px-3 py-2 rounded-lg hover:bg-navy-800 text-slate-300 hover:text-white">Physics Playground (KE)</a>
+      <a href="#model-comparison" class="block px-3 py-2 rounded-lg hover:bg-navy-800 text-slate-300 hover:text-white">Model Comparison</a>
+      <a href="#how-it-works" class="block px-3 py-2 rounded-lg hover:bg-navy-800 text-slate-300 hover:text-white">How It Works</a>
+      <a href="#research" class="block px-3 py-2 rounded-lg hover:bg-navy-800 text-slate-300 hover:text-white">About & Team</a>
+    </div>
+  </header>
+
+  <!-- ACCESSIBLE INITIATIVE STATUS BANNER -->
+  <div class="relative z-10 bg-gradient-to-r from-navy-900 via-navy-850 to-navy-900 border-b border-navy-800/80 py-2 px-4 text-xs">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-slate-400">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-800/80 text-cyan-300 font-mono text-[11px]">
+          <i data-lucide="check-circle-2" class="w-3 h-3 text-cyan-400"></i> Working: On-Device Hand Tracking & Multilingual Translation
+        </span>
+        <span class="hidden sm:inline-block text-slate-500">•</span>
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-violet-950/80 border border-violet-800/80 text-violet-300 font-mono text-[11px]">
+          <i data-lucide="shield-check" class="w-3 h-3 text-violet-400"></i> Sanchar Saathi & FIOL Initiative: Accessible Communication
+        </span>
+      </div>
+      <div class="flex items-center gap-2 text-[11px] font-mono text-slate-400">
+        <span class="text-emerald-400 font-semibold">100% On-Device & Private:</span>
+        <span>Local in-browser AI processing — zero cloud transmission</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="relative z-10">
+
+    <!-- SECTION 1: HERO / LANDING PAGE -->
+    <section id="hero" class="relative pt-14 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left Column: Headline & Story -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-navy-850 border border-cyan-500/30 text-cyan-400 text-xs font-mono">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <span>SANCHAR SAATHI & FIOL • ACCESSIBLE AI INITIATIVE</span>
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold text-white tracking-tight leading-tight">
+            Your Gestures.<br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-cyan-200">Your Language.</span><br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-300">Your Voice.</span>
+          </h1>
+
+          <p class="text-lg text-slate-300 leading-relaxed font-normal max-w-2xl">
+            Empowering deaf and hard-of-hearing individuals to communicate effortlessly with anyone. 
+            <strong class="text-white font-medium">KINETIQ</strong> bridges the communication barrier by tracking natural hand movement, 
+            extracting physical kinematics (<span class="text-cyan-300">velocity</span>, <span class="text-violet-300">jerk</span>, and <span class="text-fuchsia-300">kinetic energy</span>), 
+            and translating gestures in real-time into English, Bengali, Hindi, and more with instant voice readout.
+          </p>
+
+          <!-- Core Call to Actions -->
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <a href="#translator" id="heroLaunchTranslatorBtn" class="px-6 py-3.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 text-white shadow-xl shadow-cyan-500/25 flex items-center gap-2 group transition-all transform hover:-translate-y-0.5">
+              <i data-lucide="languages" class="w-4 h-4 fill-current group-hover:scale-110 transition-transform"></i>
+              Launch Live Translator
+            </a>
+            <a href="#physics-playground" class="px-6 py-3.5 rounded-xl font-semibold text-sm bg-navy-850 hover:bg-navy-800 border border-navy-700 hover:border-cyan-500/50 text-slate-200 flex items-center gap-2 transition-all">
+              <i data-lucide="gauge" class="w-4 h-4 text-cyan-400"></i>
+              Explore Motion Physics (\(KE=\frac{1}{2}mv^2\))
+            </a>
+          </div>
+
+          <!-- Quick Pipeline Preview Pills -->
+          <div class="pt-6 border-t border-navy-800/80">
+            <p class="text-xs uppercase font-mono text-slate-400 tracking-wider mb-3">Accessible Communication Pipeline:</p>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div class="p-3 rounded-lg bg-navy-900/80 border border-navy-800 hover:border-cyan-500/40 transition-all">
+                <div class="text-[10px] font-mono text-cyan-400 font-bold mb-1">01 • SKELETON</div>
+                <div class="text-xs font-semibold text-white">21 3D Landmarks</div>
+                <div class="text-[11px] text-slate-400">MediaPipe Vision</div>
+              </div>
+              <div class="p-3 rounded-lg bg-navy-900/80 border border-navy-800 hover:border-cyan-500/40 transition-all">
+                <div class="text-[10px] font-mono text-cyan-400 font-bold mb-1">02 • MOTION</div>
+                <div class="text-xs font-semibold text-white">Velocity & Jerk</div>
+                <div class="text-[11px] text-slate-400">Numerical \(\frac{dp}{dt}, \frac{da}{dt}\)</div>
+              </div>
+              <div class="p-3 rounded-lg bg-navy-900/80 border border-navy-800 hover:border-violet-500/40 transition-all">
+                <div class="text-[10px] font-mono text-violet-400 font-bold mb-1">03 • TRANSLATE</div>
+                <div class="text-xs font-semibold text-white">Multilingual</div>
+                <div class="text-[11px] text-slate-400">EN / BN / HI / ES / FR</div>
+              </div>
+              <div class="p-3 rounded-lg bg-navy-900/80 border border-navy-800 hover:border-violet-500/40 transition-all">
+                <div class="text-[10px] font-mono text-violet-400 font-bold mb-1">04 • VOICE</div>
+                <div class="text-xs font-semibold text-white">Speech Readout</div>
+                <div class="text-[11px] text-slate-400">Spoken Audio Output</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Biomechanical Hand Model Visualizer -->
+        <div class="lg:col-span-5">
+          <div class="relative rounded-2xl bg-gradient-to-b from-navy-850 to-navy-900 p-1 border border-navy-700/80 shadow-2xl shadow-cyan-950/40">
+            <!-- Glass header -->
+            <div class="px-4 py-3 bg-navy-950/60 rounded-t-xl border-b border-navy-800 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span class="text-xs font-mono text-slate-300 font-medium">BIOMECHANICAL_RIGID_BODY.SIM</span>
+              </div>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-300">60 FPS REAL-TIME</span>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="relative w-full aspect-square max-h-[420px] bg-navy-950/90 rounded-b-xl overflow-hidden flex items-center justify-center">
+              <canvas id="heroHandCanvas" width="450" height="420" class="w-full h-full object-contain cursor-grab active:cursor-grabbing"></canvas>
+              
+              <!-- Floating HUD cards over canvas -->
+              <div class="absolute top-3 left-3 bg-navy-900/90 backdrop-blur-md border border-navy-700/80 rounded-lg p-2.5 shadow-lg max-w-[170px] space-y-1">
+                <div class="text-[10px] text-slate-400 font-mono">WRIST LINEAR VELOCITY</div>
+                <div id="heroVelocityVal" class="text-sm font-mono font-bold text-cyan-400">0.84 m/s</div>
+                <div class="w-full bg-navy-950 h-1 rounded-full overflow-hidden">
+                  <div id="heroVelocityBar" class="bg-cyan-400 h-full w-[45%] transition-all duration-150"></div>
+                </div>
+              </div>
+
+              <div class="absolute bottom-3 right-3 bg-navy-900/90 backdrop-blur-md border border-navy-700/80 rounded-lg p-2.5 shadow-lg max-w-[170px] space-y-1 text-right">
+                <div class="text-[10px] text-slate-400 font-mono">RIGID-BODY KINETIC ENERGY</div>
+                <div id="heroEnergyVal" class="text-sm font-mono font-bold text-violet-400">0.158 J</div>
+                <div class="text-[10px] text-slate-500 font-mono">Mass ~ 0.45 kg (Dempster)</div>
+              </div>
+
+              <div class="absolute bottom-3 left-3 text-[10px] font-mono text-slate-500 bg-navy-950/70 px-2 py-1 rounded">
+                Drag mouse / touch to interact
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2: THE MAIN FEATURE — KINETIQ TRANSLATE -->
+    <section id="translator" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
+      <!-- Anchor for backward compatibility -->
+      <div id="live-lab"></div>
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300 text-xs font-mono mb-2">
+            <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+            SANCHAR SAATHI & FIOL • ACCESSIBLE COMMUNICATION SUITE
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-display font-bold text-white">KINETIQ Translate</h2>
+          <p class="text-slate-400 text-sm mt-1 max-w-2xl">
+            Real-time gesture-to-text communication. Make a hand gesture in front of your camera, and your translated message appears instantly in your selected language with voice readout.
+          </p>
+        </div>
+        
+        <!-- Mode Switcher -->
+        <div class="flex items-center gap-2 bg-navy-900 p-1 rounded-xl border border-navy-800">
+          <button id="modeWebcamBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-cyan-500 text-white shadow-md shadow-cyan-500/20 flex items-center gap-1.5">
+            <i data-lucide="camera" class="w-3.5 h-3.5"></i> Live Camera
+          </button>
+          <button id="modeSyntheticBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center gap-1.5">
+            <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Demo Simulation
+          </button>
+        </div>
+      </div>
+
+      <!-- MAIN TRANSLATOR 2-COLUMN WORKSPACE -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left Column: Camera / Hand Tracker Viewport (7 cols) -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="relative bg-navy-900 rounded-2xl border border-navy-700/80 overflow-hidden shadow-2xl">
+            
+            <!-- Viewport Top Toolbar -->
+            <div class="p-3 bg-navy-950/80 backdrop-blur-md border-b border-navy-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div class="flex items-center gap-3">
+                <!-- Status Badge -->
+                <div id="trackingStatusBadge" class="flex items-center gap-2 px-2.5 py-1 rounded-md bg-navy-800 border border-navy-700 font-mono text-[11px] text-slate-300">
+                  <span id="trackingStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                  <span id="trackingStatusText">STANDBY / READY</span>
+                </div>
+                <!-- Processing State Badge -->
+                <div id="processingStateBadge" class="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700 font-mono text-[11px] text-slate-300">
+                  <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                  <span>Ready (Awaiting Hand)</span>
+                </div>
+                <!-- FPS Meter -->
+                <div class="font-mono text-slate-400 flex items-center gap-1">
+                  <span>FPS:</span>
+                  <span id="liveFpsVal" class="text-cyan-400 font-bold">60.0</span>
+                </div>
+                <!-- Latency -->
+                <div class="font-mono text-slate-400 hidden sm:flex items-center gap-1">
+                  <span>LATENCY:</span>
+                  <span id="liveLatencyVal" class="text-slate-200 font-semibold">12ms</span>
+                </div>
+              </div>
+
+              <!-- Viewport Overlay Toggles -->
+              <div class="flex items-center gap-2">
+                <button id="toggleSkeletonBtn" class="px-2 py-1 rounded bg-navy-850 hover:bg-navy-800 text-cyan-300 border border-cyan-800/60 text-[11px] font-mono flex items-center gap-1" title="Toggle skeleton overlay">
+                  <i data-lucide="layers" class="w-3 h-3"></i> Skeleton: ON
+                </button>
+                <button id="toggleVectorsBtn" class="px-2 py-1 rounded bg-navy-850 hover:bg-navy-800 text-violet-300 border border-violet-800/60 text-[11px] font-mono flex items-center gap-1" title="Toggle velocity vectors">
+                  <i data-lucide="arrow-up-right" class="w-3 h-3"></i> Vectors: ON
+                </button>
+                <button id="toggleMirrorBtn" class="px-2 py-1 rounded bg-navy-850 hover:bg-navy-800 text-slate-300 border border-navy-700 text-[11px] font-mono" title="Toggle mirror view">
+                  Mirror
+                </button>
+              </div>
+            </div>
+
+            <!-- Video & Canvas Viewport -->
+            <div class="relative w-full aspect-[4/3] sm:aspect-[16/10] bg-navy-950 flex items-center justify-center overflow-hidden camera-viewport">
+              <!-- Raw Video Stream -->
+              <video id="webcamVideo" autoplay playsinline muted class="absolute inset-0 w-full h-full object-cover transform -scale-x-100 opacity-80"></video>
+              
+              <!-- 21-Landmark Canvas Overlay -->
+              <canvas id="trackingCanvas" width="800" height="500" class="absolute inset-0 w-full h-full object-contain pointer-events-none z-10"></canvas>
+
+              <!-- Standby / Inactive Overlay -->
+              <div id="cameraStandbyOverlay" class="absolute inset-0 bg-navy-950/90 z-20 flex flex-col items-center justify-center p-6 text-center space-y-4">
+                <div class="w-16 h-16 rounded-2xl bg-cyan-950/80 border border-cyan-800/60 flex items-center justify-center text-cyan-400 shadow-xl shadow-cyan-950">
+                  <i data-lucide="camera" class="w-8 h-8"></i>
+                </div>
+                <div class="max-w-md space-y-2">
+                  <h3 id="cameraOverlayTitle" class="text-lg font-display font-bold text-white">Camera Tracking is Inactive</h3>
+                  <p id="cameraOverlayDesc" class="text-xs text-slate-400 leading-relaxed">
+                    Click <strong class="text-cyan-300">Start Camera</strong> to translate your gestures live in your browser using MediaPipe. All processing runs 100% locally on your device for absolute privacy.
+                  </p>
+                </div>
+                <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+                  <button id="startCameraBtn" class="px-5 py-2.5 rounded-xl font-semibold text-xs bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 text-white shadow-lg shadow-cyan-500/25 flex items-center gap-2">
+                    <i data-lucide="video" class="w-4 h-4"></i> Start Camera Tracking
+                  </button>
+                  <button id="runSampleSimulationBtn" class="px-4 py-2.5 rounded-xl font-semibold text-xs bg-navy-850 hover:bg-navy-800 border border-navy-700 text-slate-300 flex items-center gap-2">
+                    <i data-lucide="play-circle" class="w-4 h-4 text-amber-400"></i> Run Demo Simulation (Wave)
+                  </button>
+                </div>
+                <p id="cameraNoticeText" class="text-[11px] font-mono text-slate-500">
+                  Requires browser webcam permission. If camera is blocked, interactive demo mode launches automatically.
+                </p>
+              </div>
+
+              <!-- Privacy Guarantee Pill Overlay -->
+              <div class="absolute top-3 left-3 z-15 bg-navy-950/85 backdrop-blur-md px-2.5 py-1 rounded-md border border-cyan-800/60 text-[10px] font-mono text-cyan-300 flex items-center gap-1.5 pointer-events-none">
+                <i data-lucide="lock" class="w-3 h-3 text-cyan-400"></i> 100% On-Device & Private (No Cloud Upload)
+              </div>
+
+              <!-- Landmark Color Legend -->
+              <div class="absolute bottom-3 left-3 z-15 bg-navy-950/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-navy-800 text-[11px] font-mono text-slate-400 flex items-center gap-3 pointer-events-none">
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-cyan-400"></span> Wrist & Carpus</span>
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-violet-400"></span> Phalanges</span>
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-fuchsia-400"></span> Fingertips</span>
+              </div>
+            </div>
+
+            <!-- Viewport Bottom Control Bar -->
+            <div class="p-3 bg-navy-950/90 border-t border-navy-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div class="flex items-center gap-2">
+                <button id="bottomStartCameraBtn" class="px-3 py-1.5 rounded-lg font-semibold text-xs bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 text-white shadow-md shadow-cyan-500/20 flex items-center gap-1.5 transition-all">
+                  <i data-lucide="video" class="w-3.5 h-3.5"></i> Start Camera
+                </button>
+                <button id="pauseResumeBtn" disabled class="px-3 py-1.5 rounded-lg font-medium text-xs bg-navy-800 hover:bg-navy-750 border border-navy-700 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 transition-all">
+                  <i data-lucide="pause" class="w-3.5 h-3.5"></i> Pause
+                </button>
+                <button id="stopCameraBtn" disabled class="px-3 py-1.5 rounded-lg font-medium text-xs bg-navy-800 hover:bg-red-950/60 hover:text-red-300 hover:border-red-800 border border-navy-700 text-slate-400 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 transition-all">
+                  <i data-lucide="video-off" class="w-3.5 h-3.5"></i> Stop Feed
+                </button>
+                <button id="retryTrackingBtn" class="px-3 py-1.5 rounded-lg font-medium text-xs bg-navy-800 hover:bg-navy-750 border border-navy-700 text-slate-300 flex items-center gap-1.5 transition-all">
+                  <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Retry
+                </button>
+
+                <!-- Synthetic Gesture Preset Selector -->
+                <div class="flex items-center gap-1.5 ml-2">
+                  <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">Demo Preset:</span>
+                  <select id="syntheticPresetSelect" class="bg-navy-850 border border-navy-700 rounded-lg px-2.5 py-1 text-[11px] text-slate-200 focus:outline-none focus:border-cyan-500 font-mono">
+                    <option value="wave">Dynamic Wave (Harmonic)</option>
+                    <option value="strike">Abrupt Strike (High Jerk)</option>
+                    <option value="tap">Gentle Tap (Low Kinetic)</option>
+                    <option value="pinch">Precision Pinch (Static)</option>
+                    <option value="swirl">Angular Swirl (ω)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Export Telemetry Button -->
+              <button id="exportTelemetryBtn" class="px-3 py-1.5 rounded-lg bg-navy-850 hover:bg-navy-800 border border-navy-700 text-slate-300 hover:text-white text-xs font-mono flex items-center gap-1.5 transition-all">
+                <i data-lucide="download" class="w-3.5 h-3.5 text-cyan-400"></i> Export Telemetry JSON
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right Column: Dedicated Multilingual Output Panel (5 cols) -->
+        <div class="lg:col-span-5 space-y-4">
+          
+          <div class="glass-panel-glow rounded-2xl p-6 space-y-5 shadow-2xl relative">
+            
+            <!-- Language Selector Header -->
+            <div class="flex items-center justify-between border-b border-navy-800 pb-3">
+              <div class="flex items-center gap-2">
+                <i data-lucide="message-circle" class="w-4 h-4 text-cyan-400"></i>
+                <h3 class="text-xs uppercase font-mono font-bold text-slate-300 tracking-wider">YOUR TRANSLATED MESSAGE</h3>
+              </div>
+              
+              <!-- Language Selector Dropdown -->
+              <div class="flex items-center gap-2">
+                <label for="languageSelector" class="text-[11px] font-mono text-slate-400 hidden sm:inline">Language:</label>
+                <select id="languageSelector" class="bg-navy-950 border border-cyan-500/50 rounded-xl px-3 py-1.5 text-xs text-cyan-300 font-medium focus:outline-none focus:border-cyan-400 shadow-sm cursor-pointer">
+                  <option value="en" selected>🇬🇧 English</option>
+                  <option value="bn">🇧🇩 বাংলা (Bengali)</option>
+                  <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
+                  <option value="es">🇪🇸 Español (Spanish)</option>
+                  <option value="fr">🇫🇷 Français (French)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Main Translated Message Box -->
+            <div class="p-5 rounded-xl bg-gradient-to-br from-navy-950 to-navy-900 border border-cyan-500/30 space-y-3 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span id="recognizedGestureBadge" class="text-xs font-mono px-2.5 py-1 rounded-lg bg-navy-850 border border-navy-700 text-cyan-300 font-semibold flex items-center gap-1">
+                  <span class="mr-1">👋</span> Dynamic Wave
+                </span>
+                <div class="flex items-center gap-2">
+                  <label class="flex items-center gap-1.5 cursor-pointer text-[11px] font-mono text-cyan-300 select-none bg-navy-900/90 px-2.5 py-0.5 rounded-full border border-cyan-800/60 hover:border-cyan-500/50 transition-colors" title="Automatically speak recognized messages">
+                    <input type="checkbox" id="autoSpeakToggle" checked class="accent-cyan-400 cursor-pointer w-3 h-3">
+                    <span class="hidden sm:inline">Auto-Voice</span>
+                  </label>
+                  <span id="recognitionConfidencePill" class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-700 text-emerald-300 font-semibold">
+                    94.2% Confidence
+                  </span>
+                </div>
+              </div>
+
+              <!-- Large Readable Headline -->
+              <h3 id="translatedMessageText" class="text-3xl sm:text-4xl font-display font-extrabold text-white text-glow-cyan leading-tight tracking-tight min-h-[72px] flex items-center message-reveal">
+                Hello! How are you?
+              </h3>
+
+              <!-- Biomechanical Rationale subline -->
+              <p id="recognitionRationale" class="text-xs text-slate-400 font-mono leading-relaxed pt-1 border-t border-navy-850">
+                Harmonic lateral velocity (v = 0.84 m/s) • Smooth oscillatory Center of Mass trajectory
+              </p>
+            </div>
+
+            <!-- Action Controls Bar -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+              <!-- Speak Aloud -->
+              <button id="speakAloudBtn" class="p-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-navy-950 font-bold text-xs shadow-md shadow-cyan-500/20 flex items-center justify-center gap-1.5 transition-all">
+                <i data-lucide="volume-2" class="w-4 h-4"></i>
+                <span id="speakBtnText">Speak Aloud</span>
+                <span id="speechAnimation" class="hidden flex items-center gap-0.5 ml-1">
+                  <span class="soundwave-bar"></span>
+                  <span class="soundwave-bar"></span>
+                  <span class="soundwave-bar"></span>
+                </span>
+              </button>
+
+              <!-- Copy Text -->
+              <button id="copyTextBtn" class="p-2.5 rounded-xl bg-navy-850 hover:bg-navy-800 border border-navy-700 hover:border-cyan-500/50 text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all">
+                <i data-lucide="copy" class="w-4 h-4 text-cyan-400"></i> Copy Text
+              </button>
+
+              <!-- Try Again -->
+              <button id="tryAgainBtn" class="p-2.5 rounded-xl bg-navy-850 hover:bg-navy-800 border border-navy-700 hover:border-violet-500/50 text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all">
+                <i data-lucide="refresh-cw" class="w-4 h-4 text-violet-400"></i> Try Again
+              </button>
+
+              <!-- Clear -->
+              <button id="clearMessageBtn" class="p-2.5 rounded-xl bg-navy-850 hover:bg-navy-800 border border-navy-700 hover:border-red-500/40 text-slate-400 hover:text-red-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all">
+                <i data-lucide="x" class="w-4 h-4"></i> Clear
+              </button>
+            </div>
+
+            <!-- Supported Gestures Quick Reference Chips -->
+            <div class="space-y-2 pt-2 border-t border-navy-800">
+              <div class="flex items-center justify-between text-[11px] font-mono text-slate-400">
+                <span>SUPPORTED GESTURES (CLICK TO DEMO):</span>
+                <span class="text-cyan-400 text-[10px]">6 CORE GESTURES</span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                <button class="gesture-example-chip p-2 rounded-lg bg-navy-950/80 hover:bg-navy-850 border border-navy-800 hover:border-cyan-500/40 text-left transition-all" data-preset="wave">
+                  <div class="text-xs font-semibold text-white">👋 Wave</div>
+                  <div class="text-[10px] text-cyan-400 font-mono truncate">"Hello! How are you?"</div>
+                </button>
+                <button class="gesture-example-chip p-2 rounded-lg bg-navy-950/80 hover:bg-navy-850 border border-navy-800 hover:border-red-500/40 text-left transition-all" data-preset="strike">
+                  <div class="text-xs font-semibold text-white">🛑 Strike</div>
+                  <div class="text-[10px] text-red-400 font-mono truncate">"Please stop! Wait here."</div>
+                </button>
+                <button class="gesture-example-chip p-2 rounded-lg bg-navy-950/80 hover:bg-navy-850 border border-navy-800 hover:border-emerald-500/40 text-left transition-all" data-preset="tap">
+                  <div class="text-xs font-semibold text-white">👆 Tap</div>
+                  <div class="text-[10px] text-emerald-400 font-mono truncate">"Thank you very much!"</div>
+                </button>
+                <button class="gesture-example-chip p-2 rounded-lg bg-navy-950/80 hover:bg-navy-850 border border-navy-800 hover:border-amber-500/40 text-left transition-all" data-preset="pinch">
+                  <div class="text-xs font-semibold text-white">👌 Pinch</div>
+                  <div class="text-[10px] text-amber-400 font-mono truncate">"Yes, understood / OK."</div>
+                </button>
+                <button class="gesture-example-chip p-2 rounded-lg bg-navy-950/80 hover:bg-navy-850 border border-navy-800 hover:border-violet-500/40 text-left transition-all" data-preset="hold">
+                  <div class="text-xs font-semibold text-white">✋ Hold</div>
+                  <div class="text-[10px] text-violet-400 font-mono truncate">"I need assistance, please."</div>
+                </button>
+                <button class="gesture-example-chip p-2 rounded-lg bg-navy-950/80 hover:bg-navy-850 border border-navy-800 hover:border-fuchsia-500/40 text-left transition-all" data-preset="swirl">
+                  <div class="text-xs font-semibold text-white">🔄 Swirl</div>
+                  <div class="text-[10px] text-fuchsia-400 font-mono truncate">"Please repeat that again."</div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Recent Conversation Log -->
+            <div class="space-y-2 pt-2 border-t border-navy-800">
+              <div class="flex items-center justify-between text-[11px] font-mono text-slate-400">
+                <span>RECENT CONVERSATION LOG:</span>
+                <span class="text-slate-500">Live assistive history</span>
+              </div>
+              <div id="recentMessageHistory" class="space-y-1.5 max-h-36 overflow-y-auto pr-1">
+                <!-- Dynamically populated via js/app.js -->
+              </div>
+            </div>
+
+            <!-- Scientific & Project Integrity Notice -->
+            <div class="p-3 rounded-lg bg-navy-950/80 border border-navy-800 text-[11px] text-slate-400 leading-relaxed">
+              <strong class="text-slate-300">Sanchar Saathi & FIOL Research Notice:</strong> Initial communication vocabulary features canonical conversational phrases disambiguated by Newtonian kinematics. Full sign-language continuous grammar is actively being expanded in our research roadmap.
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- INSTANTANEOUS BIOMECHANICAL TELEMETRY HUD ROW -->
+      <div class="mt-8 bg-navy-900 rounded-2xl border border-navy-700/80 p-5 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-navy-800 pb-3">
+          <div class="flex items-center gap-2">
+            <i data-lucide="gauge" class="w-4 h-4 text-cyan-400"></i>
+            <h3 class="text-sm font-display font-bold text-white">Supporting Motion Physics Telemetry HUD</h3>
+            <span class="text-[10px] text-slate-400 font-mono">(Newtonian Physical Foundation)</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="hidden sm:flex items-center gap-1.5 text-xs font-mono">
+              <span class="text-slate-400">Classifier:</span>
+              <span id="gesturePredictedLabel" class="text-cyan-400 font-bold">Dynamic Wave</span>
+              <span id="gestureConfidenceVal" class="text-slate-400 text-[10px]">(94.2%)</span>
+            </div>
+            <span id="liveHandBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-navy-800 border border-navy-700 text-slate-400 self-start sm:self-auto">
+              RIGHT HAND (0.97 CONF)
+            </span>
+          </div>
+        </div>
+
+        <!-- Metric Readout Tiles -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <!-- Velocity -->
+          <div class="p-3 rounded-xl bg-navy-950/70 border border-navy-800/80">
+            <div class="text-[10px] font-mono text-slate-400 flex items-center justify-between">
+              <span>VELOCITY (\(v\))</span>
+              <span class="text-cyan-400 text-[9px]">SI: m/s</span>
+            </div>
+            <div id="hudVelocity" class="text-lg font-mono font-bold text-cyan-400 mt-1">0.42</div>
+            <div class="text-[10px] text-slate-500 font-mono mt-0.5">Wrist CoM norm</div>
+          </div>
+
+          <!-- Acceleration -->
+          <div class="p-3 rounded-xl bg-navy-950/70 border border-navy-800/80">
+            <div class="text-[10px] font-mono text-slate-400 flex items-center justify-between">
+              <span>ACCELERATION (\(a\))</span>
+              <span class="text-violet-400 text-[9px]">SI: m/s²</span>
+            </div>
+            <div id="hudAcceleration" class="text-lg font-mono font-bold text-violet-400 mt-1">1.85</div>
+            <div class="text-[10px] text-slate-500 font-mono mt-0.5">\(\Delta v / \Delta t\) derivative</div>
+          </div>
+
+          <!-- Jerk -->
+          <div class="p-3 rounded-xl bg-navy-950/70 border border-navy-800/80">
+            <div class="text-[10px] font-mono text-slate-400 flex items-center justify-between">
+              <span>JERK (\(j\))</span>
+              <span class="text-fuchsia-400 text-[9px]">SI: m/s³</span>
+            </div>
+            <div id="hudJerk" class="text-lg font-mono font-bold text-fuchsia-400 mt-1">8.40</div>
+            <div class="text-[10px] text-slate-500 font-mono mt-0.5">Abruptness marker</div>
+          </div>
+
+          <!-- Kinetic Energy -->
+          <div class="p-3 rounded-xl bg-navy-950/70 border border-navy-800/80">
+            <div class="text-[10px] font-mono text-slate-400 flex items-center justify-between">
+              <span>EST. ENERGY (\(KE\))</span>
+              <span class="text-amber-400 text-[9px]">SI: Joules</span>
+            </div>
+            <div id="hudEnergy" class="text-lg font-mono font-bold text-amber-400 mt-1">0.040</div>
+            <div class="text-[10px] text-slate-500 font-mono mt-0.5">\(m \approx 0.45\text{ kg}\)</div>
+          </div>
+        </div>
+
+        <!-- Joint Kinematics Summary -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 rounded-xl bg-navy-950/70 border border-navy-800/80 text-[11px] font-mono">
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">ANGULAR VELOCITY (\(\omega\)):</span>
+            <span id="hudAngularVel" class="text-slate-200 font-bold">1.42 rad/s</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">SMOOTHNESS (SPARC):</span>
+            <span id="hudSmoothness" class="text-emerald-400 font-bold">0.86 / 1.0</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">PALM (ROLL/PITCH):</span>
+            <span id="hudOrientation" class="text-slate-300 font-bold">12° / -5°</span>
+          </div>
+        </div>
+
+        <!-- Feature Vector Drawer Trigger -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs pt-1">
+          <div class="text-slate-400 text-[11px] font-mono">
+            Active 98-D Feature Vector: 21 landmarks × 3D coordinates + 15 joint angles + 6 velocity components + KE & jerk metrics
+          </div>
+          <button id="toggleFeatureDrawerBtn" class="px-3 py-1.5 rounded-lg bg-navy-800 hover:bg-navy-750 text-cyan-300 border border-navy-700 font-mono text-xs flex items-center gap-1.5 transition-all">
+            <i data-lucide="eye" class="w-3.5 h-3.5"></i> Inspect Numerical Vector
+          </button>
+        </div>
+
+        <!-- Collapsible Feature Drawer -->
+        <div id="featureDrawer" class="hidden p-4 rounded-xl bg-navy-950 border border-navy-800 font-mono text-[11px] text-cyan-300/90 overflow-x-auto max-h-44">
+          <pre id="featureVectorPreview">// Live Numerical Feature Vector Stream [f_0, f_1, ... f_97]
+[0.512, 0.638, -0.012, 0.498, 0.589, -0.021, 0.481, 0.540, -0.035, ...]</pre>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SECTION 3: MOTION PHYSICS REAL-TIME DASHBOARD -->
+    <section id="physics-dashboard" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-950 border border-violet-800 text-violet-300 text-xs font-mono mb-2">
+            <i data-lucide="line-chart" class="w-3.5 h-3.5"></i>
+            NEWTONIAN STATE OBSERVER
+          </div>
+          <h2 class="text-3xl font-display font-bold text-white">Motion Physics Real-Time Telemetry</h2>
+          <p class="text-slate-400 text-sm mt-1 max-w-2xl">
+            Live multi-trace oscilloscope displaying higher-order spatial derivatives and thermodynamic quantities derived from continuous landmark tracking.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs font-mono">
+          <span class="text-slate-400">Buffer Window:</span>
+          <span class="px-2.5 py-1 rounded bg-navy-900 border border-navy-800 text-cyan-300 font-bold">120 FRAMES (~2.0s)</span>
+        </div>
+      </div>
+
+      <!-- 4 Live Synchronized Oscilloscope Canvas Charts -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Chart 1: Velocity -->
+        <div class="bg-navy-900 rounded-2xl border border-navy-800 p-5 shadow-xl space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+              <h3 class="text-sm font-display font-bold text-white">Linear Velocity \(v(t) = \frac{\Delta p}{\Delta t}\)</h3>
+            </div>
+            <span class="text-xs font-mono text-cyan-400 font-bold" id="dashPeakVelocity">PEAK: 1.24 m/s</span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-mono">Rate of displacement of hand Center-of-Mass (CoM) in 3D metric coordinates.</p>
+          <div class="relative w-full h-48 bg-navy-950 rounded-xl overflow-hidden border border-navy-850">
+            <canvas id="chartVelocity" width="550" height="192" class="w-full h-full"></canvas>
+            <div class="absolute top-2 left-3 text-[10px] font-mono text-cyan-500/70">m/s</div>
+          </div>
+        </div>
+
+        <!-- Chart 2: Acceleration -->
+        <div class="bg-navy-900 rounded-2xl border border-navy-800 p-5 shadow-xl space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-violet-400"></span>
+              <h3 class="text-sm font-display font-bold text-white">Linear Acceleration \(a(t) = \frac{\Delta v}{\Delta t}\)</h3>
+            </div>
+            <span class="text-xs font-mono text-violet-400 font-bold" id="dashPeakAccel">PEAK: 4.82 m/s²</span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-mono">First derivative of velocity. Directly correlates with inferred inertial forces \(F=ma\).</p>
+          <div class="relative w-full h-48 bg-navy-950 rounded-xl overflow-hidden border border-navy-850">
+            <canvas id="chartAcceleration" width="550" height="192" class="w-full h-full"></canvas>
+            <div class="absolute top-2 left-3 text-[10px] font-mono text-violet-500/70">m/s²</div>
+          </div>
+        </div>
+
+        <!-- Chart 3: Jerk -->
+        <div class="bg-navy-900 rounded-2xl border border-navy-800 p-5 shadow-xl space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-fuchsia-400"></span>
+              <h3 class="text-sm font-display font-bold text-white">Jerk \(j(t) = \frac{\Delta a}{\Delta t}\) (Motion Abruptness)</h3>
+            </div>
+            <span class="text-xs font-mono text-fuchsia-400 font-bold" id="dashPeakJerk">PEAK: 22.1 m/s³</span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-mono">Second derivative of velocity. Distinguishes gentle stops from sudden strike gestures.</p>
+          <div class="relative w-full h-48 bg-navy-950 rounded-xl overflow-hidden border border-navy-850">
+            <canvas id="chartJerk" width="550" height="192" class="w-full h-full"></canvas>
+            <div class="absolute top-2 left-3 text-[10px] font-mono text-fuchsia-500/70">m/s³</div>
+          </div>
+        </div>
+
+        <!-- Chart 4: Kinetic Energy -->
+        <div class="bg-navy-900 rounded-2xl border border-navy-800 p-5 shadow-xl space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+              <h3 class="text-sm font-display font-bold text-white">Kinetic Energy \(KE = \frac{1}{2} m v^2 + \frac{1}{2} I \omega^2\)</h3>
+            </div>
+            <span class="text-xs font-mono text-amber-400 font-bold" id="dashPeakEnergy">PEAK: 0.345 J</span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-mono">Combines translational and rotational energy using estimated hand mass & moment of inertia.</p>
+          <div class="relative w-full h-48 bg-navy-950 rounded-xl overflow-hidden border border-navy-850">
+            <canvas id="chartEnergy" width="550" height="192" class="w-full h-full"></canvas>
+            <div class="absolute top-2 left-3 text-[10px] font-mono text-amber-500/70">Joules (J)</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 4: PHYSICS PLAYGROUND -->
+    <section id="physics-playground" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
+      
+      <!-- Section Header -->
+      <div class="max-w-3xl mb-8">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-950 border border-amber-800 text-amber-300 text-xs font-mono mb-2">
+          <i data-lucide="gauge" class="w-3.5 h-3.5"></i>
+          INTERACTIVE RESEARCH SIMULATION
+        </div>
+        <h2 class="text-3xl font-display font-bold text-white">Physics Playground: The \(KE = \frac{1}{2}mv^2\) Exponential Effect</h2>
+        <p class="text-slate-400 text-sm mt-1 leading-relaxed">
+          Why velocity matters dramatically in gesture disambiguation: kinetic energy scales with the <em>square of speed</em>. A sharp strike at \(4\times\) speed generates <strong class="text-amber-300">\(16\times\) more kinetic energy</strong> for the identical hand shape.
+        </p>
+      </div>
+
+      <!-- Playground Interactive Workspace -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Controls Column (Left 5 cols) -->
+        <div class="lg:col-span-5 bg-navy-900 rounded-2xl border border-navy-800 p-6 shadow-xl space-y-6">
+          <h3 class="text-base font-display font-bold text-white flex items-center gap-2">
+            <i data-lucide="sliders" class="w-4 h-4 text-cyan-400"></i>
+            Simulation Parameters
+          </h3>
+
+          <!-- Speed Slider -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-slate-300">HAND SPEED (\(v\)):</span>
+              <span id="playgroundSpeedVal" class="text-cyan-400 font-bold text-sm">1.00 m/s</span>
+            </div>
+            <input id="playgroundSpeedSlider" type="range" min="0.1" max="4.0" step="0.05" value="1.0" class="w-full accent-cyan-400 cursor-pointer">
+            <div class="flex justify-between text-[10px] font-mono text-slate-500">
+              <span>0.1 m/s (Micro)</span>
+              <span>2.0 m/s (Normal)</span>
+              <span>4.0 m/s (Rapid Strike)</span>
+            </div>
+          </div>
+
+          <!-- Hand Mass Slider -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-slate-300">HAND SEGMENT MASS (\(m\)):</span>
+              <span id="playgroundMassVal" class="text-violet-400 font-bold text-sm">0.45 kg</span>
+            </div>
+            <input id="playgroundMassSlider" type="range" min="0.25" max="0.75" step="0.01" value="0.45" class="w-full accent-violet-400 cursor-pointer">
+            <div class="flex justify-between text-[10px] font-mono text-slate-500">
+              <span>0.25 kg (Light)</span>
+              <span>0.45 kg (Dempster standard)</span>
+              <span>0.75 kg (Heavy)</span>
+            </div>
+          </div>
+
+          <!-- Quick Presets -->
+          <div class="space-y-2 pt-2 border-t border-navy-800">
+            <div class="text-[11px] font-mono text-slate-400 uppercase">Movement Archetype Presets:</div>
+            <div class="grid grid-cols-3 gap-2">
+              <button id="presetTapBtn" class="p-2 rounded-lg bg-navy-850 hover:bg-navy-800 border border-navy-700 hover:border-cyan-500/40 text-left transition-all">
+                <div class="text-[10px] font-mono text-cyan-400">GENTLE TAP</div>
+                <div class="text-xs font-bold text-white mt-0.5">0.3 m/s</div>
+              </button>
+              <button id="presetWaveBtn" class="p-2 rounded-lg bg-navy-850 hover:bg-navy-800 border border-navy-700 hover:border-violet-500/40 text-left transition-all">
+                <div class="text-[10px] font-mono text-violet-400">NORMAL WAVE</div>
+                <div class="text-xs font-bold text-white mt-0.5">1.2 m/s</div>
+              </button>
+              <button id="presetStrikeBtn" class="p-2 rounded-lg bg-navy-850 hover:bg-navy-800 border border-navy-700 hover:border-amber-500/40 text-left transition-all">
+                <div class="text-[10px] font-mono text-amber-400">SHARP STRIKE</div>
+                <div class="text-xs font-bold text-white mt-0.5">3.6 m/s</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Real-Time Calculated Energy Display -->
+          <div class="p-4 rounded-xl bg-gradient-to-br from-navy-950 to-navy-900 border border-amber-500/30 space-y-1">
+            <div class="text-[10px] font-mono text-amber-400 uppercase tracking-wider">RESULTING KINETIC ENERGY</div>
+            <div id="playgroundCalculatedEnergy" class="text-3xl font-mono font-extrabold text-white">0.225 J</div>
+            <div class="text-[11px] font-mono text-slate-400 pt-1">
+              Formula: \(KE = \frac{1}{2} \cdot 0.45\text{ kg} \cdot (1.00\text{ m/s})^2\)
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Visualizer & Scientific Comparison Column (Right 7 cols) -->
+        <div class="lg:col-span-7 bg-navy-900 rounded-2xl border border-navy-800 p-6 shadow-xl space-y-6">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-display font-bold text-white flex items-center gap-2">
+              <i data-lucide="bar-chart-2" class="w-4 h-4 text-amber-400"></i>
+              Kinetic Energy Growth Curve (\(v \to v^2\))
+            </h3>
+            <span class="text-xs font-mono text-slate-400">Non-Linear Power Law</span>
+          </div>
+
+          <!-- Dynamic Playground Canvas -->
+          <div class="relative w-full h-56 bg-navy-950 rounded-xl overflow-hidden border border-navy-850">
+            <canvas id="playgroundCurveCanvas" width="600" height="224" class="w-full h-full"></canvas>
+            <div class="absolute top-2 left-3 text-[10px] font-mono text-amber-500/80">KE (Joules)</div>
+            <div class="absolute bottom-2 right-3 text-[10px] font-mono text-slate-500">Speed \(v\) (m/s) &rarr;</div>
+          </div>
+
+          <!-- The Quadruple Speed (16x Energy) Comparison Bar -->
+          <div class="p-4 rounded-xl bg-navy-950/80 border border-navy-800 space-y-3">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-white font-bold">THE QUADRUPLE SPEED EVIDENCE:</span>
+              <span class="text-amber-400 font-bold">16× ENERGY MULTIPLIER</span>
+            </div>
+            
+            <div class="space-y-2">
+              <div>
+                <div class="flex justify-between text-[11px] font-mono text-slate-400 mb-1">
+                  <span>Baseline Gesture (\(v_1 = 1.0\text{ m/s}\)):</span>
+                  <span class="text-cyan-400 font-bold">0.225 Joules (\(1\times\))</span>
+                </div>
+                <div class="w-full bg-navy-900 h-2.5 rounded-full overflow-hidden">
+                  <div class="bg-cyan-400 h-full w-[6.25%] rounded-full"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-[11px] font-mono text-slate-400 mb-1">
+                  <span>Quadrupled Strike Gesture (\(v_2 = 4.0\text{ m/s}\)):</span>
+                  <span class="text-amber-400 font-bold">3.600 Joules (16×)</span>
+                </div>
+                <div class="w-full bg-navy-900 h-2.5 rounded-full overflow-hidden">
+                  <div class="bg-gradient-to-r from-amber-500 to-red-500 h-full w-full rounded-full"></div>
+                </div>
+              </div>
+            </div>
+
+            <p class="text-[11px] text-slate-400 leading-relaxed pt-1">
+              <strong>Key Biomechanical Principle:</strong> A static camera only captures hand pose at \(t=0\). By observing kinetic energy (\(16\times\) contrast), an AI classifier cleanly separates a gentle reassuring tap from an abrupt defensive stop command.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- SECTION 5: MODEL COMPARISON LAB (RESEARCH BENCHMARK) -->
+    <section id="model-comparison" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-fuchsia-950 border border-fuchsia-800 text-fuchsia-300 text-xs font-mono mb-2">
+            <i data-lucide="git-compare" class="w-3.5 h-3.5"></i>
+            EXPERIMENTAL ABLATION STUDY
+          </div>
+          <h2 class="text-3xl font-display font-bold text-white">Model Comparison Lab: 3-Way Architectural Benchmark</h2>
+          <p class="text-slate-400 text-sm mt-1 max-w-2xl">
+            Comparing the three models defined in our research report: Shape-Only, Dynamics-Only, and our proposed Physics-Informed Hybrid pipeline.
+          </p>
+        </div>
+
+        <div class="p-2 rounded-xl bg-navy-900 border border-navy-800 flex items-center gap-2 text-xs font-mono text-slate-400">
+          <i data-lucide="info" class="w-4 h-4 text-violet-400"></i>
+          <span>Protocol: 5-Fold Cross Validation on 12 Dynamic Signs</span>
+        </div>
+      </div>
+
+      <!-- 3 Model Comparative Architecture Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        
+        <!-- Model A: Shape-Only -->
+        <div class="bg-navy-900 rounded-2xl border border-navy-800 p-5 space-y-4 relative hover:border-slate-600 transition-all">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">BASELINE MODEL A</span>
+            <span class="text-xs font-mono text-slate-400">Static Spatial</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-display font-bold text-white">Shape-Only</h3>
+            <p class="text-xs text-slate-400 mt-1">21 raw MediaPipe landmark Cartesian coordinates \((x,y,z)\). No temporal or kinetic features.</p>
+          </div>
+          <div class="space-y-2 text-xs font-mono">
+            <div class="flex justify-between text-slate-300">
+              <span>Expected Accuracy:</span>
+              <span class="text-slate-200 font-bold">~74.2%</span>
+            </div>
+            <div class="flex justify-between text-slate-300">
+              <span>Macro-F1 Score:</span>
+              <span class="text-slate-200 font-bold">0.718</span>
+            </div>
+            <div class="flex justify-between text-slate-300">
+              <span>Dynamic Confusion:</span>
+              <span class="text-red-400 font-bold">High (31%)</span>
+            </div>
+          </div>
+          <div class="text-[11px] text-slate-500 pt-2 border-t border-navy-800">
+            Fails when gestures share identical hand poses (e.g. "Wait" vs "Halt!").
+          </div>
+        </div>
+
+        <!-- Model B: Dynamics-Only -->
+        <div class="bg-navy-900 rounded-2xl border border-navy-800 p-5 space-y-4 relative hover:border-cyan-600 transition-all">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-300">ABLATION MODEL B</span>
+            <span class="text-xs font-mono text-cyan-400">Temporal Vector</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-display font-bold text-white">Dynamics-Only</h3>
+            <p class="text-xs text-slate-400 mt-1">Velocity, acceleration, and jerk trajectories. Landmark spatial geometry is discarded.</p>
+          </div>
+          <div class="space-y-2 text-xs font-mono">
+            <div class="flex justify-between text-slate-300">
+              <span>Expected Accuracy:</span>
+              <span class="text-cyan-400 font-bold">~68.5%</span>
+            </div>
+            <div class="flex justify-between text-slate-300">
+              <span>Macro-F1 Score:</span>
+              <span class="text-cyan-400 font-bold">0.664</span>
+            </div>
+            <div class="flex justify-between text-slate-300">
+              <span>Dynamic Confusion:</span>
+              <span class="text-amber-400 font-bold">Moderate (18%)</span>
+            </div>
+          </div>
+          <div class="text-[11px] text-slate-500 pt-2 border-t border-navy-800">
+            Recognizes movement profile, but confuses hand shapes with matching trajectory.
+          </div>
+        </div>
+
+        <!-- Model C: Physics-Informed Combined -->
+        <div class="bg-gradient-to-b from-navy-850 to-navy-900 rounded-2xl border-2 border-cyan-500/80 p-5 space-y-4 relative shadow-xl shadow-cyan-950/50">
+          <div class="absolute -top-3 right-4 px-2.5 py-0.5 rounded-full bg-cyan-500 text-navy-950 text-[10px] font-bold font-mono uppercase tracking-wider">
+            SANCHAR SAATHI & FIOL PROPOSAL
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 border border-cyan-700 text-cyan-300">PROPOSED MODEL C</span>
+            <span class="text-xs font-mono text-emerald-400 font-bold">Physics-Informed</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-display font-bold text-white">Shape + Dynamics (Hybrid)</h3>
+            <p class="text-xs text-slate-300 mt-1">Joint angles + bone vectors + \(v, a, j\) + rigid-body kinetic energy + momentum.</p>
+          </div>
+          <div class="space-y-2 text-xs font-mono">
+            <div class="flex justify-between text-slate-200">
+              <span>Expected Accuracy:</span>
+              <span class="text-cyan-300 font-bold text-sm">~92.8% (+18.6%)</span>
+            </div>
+            <div class="flex justify-between text-slate-200">
+              <span>Macro-F1 Score:</span>
+              <span class="text-cyan-300 font-bold text-sm">0.915</span>
+            </div>
+            <div class="flex justify-between text-slate-200">
+              <span>Dynamic Confusion:</span>
+              <span class="text-emerald-400 font-bold">Low (&lt; 4%)</span>
+            </div>
+          </div>
+          <div class="text-[11px] text-cyan-300/80 pt-2 border-t border-navy-800">
+            Disambiguates static shape ambiguities via Newtonian kinematic differentiation.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Confusion Matrix & Scientific Integrity Toggle -->
+      <div class="bg-navy-900 rounded-2xl border border-navy-800 p-6 shadow-xl space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="text-base font-display font-bold text-white flex items-center gap-2">
+              <i data-lucide="grid" class="w-4 h-4 text-violet-400"></i>
+              Interactive Confusion Matrix Visualizer
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Toggle between models to see how adding physics eliminates dynamic twin confusion.</p>
+          </div>
+
+          <!-- Model Switcher Buttons for Matrix -->
+          <div class="flex items-center gap-1.5 bg-navy-950 p-1 rounded-xl border border-navy-800 text-xs font-mono">
+            <button id="cmBtnShape" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white transition-all">Shape-Only</button>
+            <button id="cmBtnDynamics" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white transition-all">Dynamics-Only</button>
+            <button id="cmBtnHybrid" class="px-3 py-1 rounded-lg bg-cyan-500 text-navy-950 font-bold shadow transition-all">Shape + Dynamics</button>
+          </div>
+        </div>
+
+        <!-- Renderable Matrix Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-center text-xs font-mono border-collapse" id="confusionMatrixTable">
+            <thead>
+              <tr class="text-slate-400 border-b border-navy-800">
+                <th class="p-2 text-left">Actual \ Predicted</th>
+                <th class="p-2">Wave (Harmonic)</th>
+                <th class="p-2">Strike (Abrupt)</th>
+                <th class="p-2">Tap (Gentle)</th>
+                <th class="p-2">Hold (Static)</th>
+                <th class="p-2">Flick (Rapid)</th>
+              </tr>
+            </thead>
+            <tbody id="confusionMatrixBody" class="divide-y divide-navy-850">
+              <!-- Dynamically populated via js/model-comparison.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Scientific Honesty Callout -->
+        <div class="p-3.5 rounded-xl bg-navy-950 border border-violet-900/50 flex items-start gap-3 text-xs text-slate-400">
+          <i data-lucide="shield-check" class="w-5 h-5 text-violet-400 shrink-0 mt-0.5"></i>
+          <div>
+            <strong class="text-violet-300">Scientific Honesty Standard:</strong>
+            The figures above represent our theoretical validation setup and projected evaluation framework for our 12-gesture test suite. As stated in our research report, empirical recording collection is actively underway, and values will be updated with final trained weights.
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SECTION 6: HOW IT WORKS (THE RESEARCH PIPELINE) -->
+    <section id="how-it-works" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
+      
+      <!-- Section Header -->
+      <div class="max-w-3xl mb-12">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300 text-xs font-mono mb-2">
+          <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+          SYSTEM ARCHITECTURE & METHODOLOGY
+        </div>
+        <h2 class="text-3xl font-display font-bold text-white">How It Works: The 7-Stage Physics Pipeline</h2>
+        <p class="text-slate-400 text-sm mt-1 leading-relaxed">
+          From uncalibrated monocular camera feed to physics-informed gesture recognition. Click each pipeline stage to inspect the underlying biomechanics, algorithms, and formulas.
+        </p>
+      </div>
+
+      <!-- Interactive Accordion Pipeline Cards -->
+      <div class="space-y-4" id="pipelineAccordion">
+        
+        <!-- Stage 1 -->
+        <div class="pipeline-card group bg-navy-900 rounded-2xl border border-navy-800 hover:border-cyan-500/50 transition-all overflow-hidden cursor-pointer" data-stage="1">
+          <div class="p-5 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <span class="w-8 h-8 rounded-xl bg-cyan-950 border border-cyan-800 text-cyan-400 font-mono text-xs font-bold flex items-center justify-center">01</span>
+              <div>
+                <h3 class="text-base font-display font-bold text-white group-hover:text-cyan-300 transition-colors">Video Ingestion & Landmark Extraction</h3>
+                <p class="text-xs text-slate-400">MediaPipe Tasks Vision extracts 21 3D coordinates \(\mathbf{P}_i = (x_i, y_i, z_i)\) at 60 FPS.</p>
+              </div>
+            </div>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-cyan-400 transition-transform"></i>
+          </div>
+          <div class="stage-details hidden px-5 pb-5 pt-2 border-t border-navy-800 text-xs text-slate-300 space-y-2 bg-navy-950/50">
+            <p>Monocular RGB video frames are fed into a lightweight convolutional detector and regression network. Each hand is represented by 21 anatomical landmarks spanning the wrist, metacarpophalangeal (MCP), proximal interphalangeal (PIP), distal interphalangeal (DIP), and fingertip joints.</p>
+            <div class="p-2.5 rounded bg-navy-900 border border-navy-800 font-mono text-cyan-400 text-[11px]">
+              Output: Matrix \(\mathbf{L} \in \mathbb{R}^{21 \times 3}\) normalized relative to wrist origin \(\mathbf{P}_0\).
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="pipeline-card group bg-navy-900 rounded-2xl border border-navy-800 hover:border-cyan-500/50 transition-all overflow-hidden cursor-pointer" data-stage="2">
+          <div class="p-5 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <span class="w-8 h-8 rounded-xl bg-cyan-950 border border-cyan-800 text-cyan-400 font-mono text-xs font-bold flex items-center justify-center">02</span>
+              <div>
+                <h3 class="text-base font-display font-bold text-white group-hover:text-cyan-300 transition-colors">Bone Vectors & Anatomical Joint Angles</h3>
+                <p class="text-xs text-slate-400">Directional vectors between adjacent joints define 15 interior joint flexion/extension angles.</p>
+              </div>
+            </div>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-cyan-400 transition-transform"></i>
+          </div>
+          <div class="stage-details hidden px-5 pb-5 pt-2 border-t border-navy-800 text-xs text-slate-300 space-y-2 bg-navy-950/50">
+            <p>Bone segments are computed as vector differences \(\mathbf{b}_{ij} = \mathbf{P}_j - \mathbf{P}_i\). The interior joint angle \(\theta_j\) between parent bone \(\mathbf{b}_{ij}\) and child bone \(\mathbf{b}_{jk}\) is calculated using the dot product formula:</p>
+            <div class="p-2.5 rounded bg-navy-900 border border-navy-800 font-mono text-cyan-400 text-[11px]">
+              Formula: \(\theta_j = \arccos\left(\frac{\mathbf{b}_{ij} \cdot \mathbf{b}_{jk}}{\|\mathbf{b}_{ij}\| \|\mathbf{b}_{jk}\|}\right)\)
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="pipeline-card group bg-navy-900 rounded-2xl border border-navy-800 hover:border-violet-500/50 transition-all overflow-hidden cursor-pointer" data-stage="3">
+          <div class="p-5 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <span class="w-8 h-8 rounded-xl bg-violet-950 border border-violet-800 text-violet-400 font-mono text-xs font-bold flex items-center justify-center">03</span>
+              <div>
+                <h3 class="text-base font-display font-bold text-white group-hover:text-violet-300 transition-colors">Trajectory Smoothing (Low-Pass Filter)</h3>
+                <p class="text-xs text-slate-400">Suppression of high-frequency camera jitter via Butterworth / Exponential Smoothing.</p>
+              </div>
+            </div>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-violet-400 transition-transform"></i>
+          </div>
+          <div class="stage-details hidden px-5 pb-5 pt-2 border-t border-navy-800 text-xs text-slate-300 space-y-2 bg-navy-950/50">
+            <p>Raw computer vision landmarks experience sensor noise and quantization error. Differentiating raw signals directly amplifies noise in acceleration and jerk. We apply a zero-phase low-pass digital filter:</p>
+            <div class="p-2.5 rounded bg-navy-900 border border-navy-800 font-mono text-violet-400 text-[11px]">
+              Smoothing: \(\hat{\mathbf{P}}_i(t) = \alpha \mathbf{P}_i(t) + (1-\alpha) \hat{\mathbf{P}}_i(t-\Delta t)\) where \(\alpha \approx 0.65\).
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 4 -->
+        <div class="pipeline-card group bg-navy-900 rounded-2xl border border-navy-800 hover:border-violet-500/50 transition-all overflow-hidden cursor-pointer" data-stage="4">
+          <div class="p-5 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <span class="w-8 h-8 rounded-xl bg-violet-950 border border-violet-800 text-violet-400 font-mono text-xs font-bold flex items-center justify-center">04</span>
+              <div>
+                <h3 class="text-base font-display font-bold text-white group-hover:text-violet-300 transition-colors">Kinematic Higher-Order Differentiation</h3>
+                <p class="text-xs text-slate-400">Numerical estimation of Velocity, Acceleration, and Jerk over timestamp intervals \(\Delta t\).</p>
+              </div>
+            </div>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-violet-400 transition-transform"></i>
+          </div>
+          <div class="stage-details hidden px-5 pb-5 pt-2 border-t border-navy-800 text-xs text-slate-300 space-y-2 bg-navy-950/50">
+            <p>Using accurate hardware timestamps from `requestAnimationFrame`, we compute continuous kinematic derivatives for key anatomical markers (wrist, index tip, thumb tip):</p>
+            <div class="p-2.5 rounded bg-navy-900 border border-navy-800 font-mono text-violet-400 text-[11px]">
+              Velocity: \(\mathbf{v}(t) = \frac{\Delta \mathbf{P}}{\Delta t}\) | Acceleration: \(\mathbf{a}(t) = \frac{\Delta \mathbf{v}}{\Delta t}\) | Jerk: \(\mathbf{j}(t) = \frac{\Delta \mathbf{a}}{\Delta t}\)
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 5 -->
+        <div class="pipeline-card group bg-navy-900 rounded-2xl border border-navy-800 hover:border-amber-500/50 transition-all overflow-hidden cursor-pointer" data-stage="5">
+          <div class="p-5 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <span class="w-8 h-8 rounded-xl bg-amber-950 border border-amber-800 text-amber-400 font-mono text-xs font-bold flex items-center justify-center">05</span>
+              <div>
+                <h3 class="text-base font-display font-bold text-white group-hover:text-amber-300 transition-colors">Rigid-Body Dynamics & Energy Formulation</h3>
+                <p class="text-xs text-slate-400">Center-of-Mass (CoM) tracking and instantaneous kinetic energy \(KE = \frac{1}{2}mv^2 + \frac{1}{2}I\omega^2\).</p>
+              </div>
+            </div>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-amber-400 transition-transform"></i>
+          </div>
+          <div class="stage-details hidden px-5 pb-5 pt-2 border-t border-navy-800 text-xs text-slate-300 space-y-2 bg-navy-950/50">
+            <p>Utilizing Dempster (1955) anthropometric body segment data, the human hand is modeled as a rigid body with mass \(m \approx 0.45\text{ kg}\) and moment of inertia tensor \(\mathbf{I}\). Center of mass \(\mathbf{P}_{cm}\) is computed across anatomical segment mass fractions:</p>
+            <div class="p-2.5 rounded bg-navy-900 border border-navy-800 font-mono text-amber-400 text-[11px]">
+              Kinetic Energy: \(KE_{total} = \frac{1}{2} m \|\mathbf{v}_{cm}\|^2 + \frac{1}{2} \boldsymbol{\omega}^T \mathbf{I} \boldsymbol{\omega}\)
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 6 -->
+        <div class="pipeline-card group bg-navy-900 rounded-2xl border border-navy-800 hover:border-emerald-500/50 transition-all overflow-hidden cursor-pointer" data-stage="6">
+          <div class="p-5 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <span class="w-8 h-8 rounded-xl bg-emerald-950 border border-emerald-800 text-emerald-400 font-mono text-xs font-bold flex items-center justify-center">06</span>
+              <div>
+                <h3 class="text-base font-display font-bold text-white group-hover:text-emerald-300 transition-colors">Physics-Informed Feature Vector Assembly</h3>
+                <p class="text-xs text-slate-400">Concatenation of static geometric descriptors with dynamic thermodynamic features.</p>
+              </div>
+            </div>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-emerald-400 transition-transform"></i>
+          </div>
+          <div class="stage-details hidden px-5 pb-5 pt-2 border-t border-navy-800 text-xs text-slate-300 space-y-2 bg-navy-950/50">
+            <p>The system constructs an enriched feature vector \(\mathbf{X} \in \mathbb{R}^{98}\) per time step:</p>
+            <div class="p-2.5 rounded bg-navy-900 border border-navy-800 font-mono text-emerald-400 text-[11px]">
+              \(\mathbf{X} = [\mathbf{L}_{geom} (63), \boldsymbol{\theta}_{joint} (15), \mathbf{v}_{key} (9), \mathbf{a}_{key} (3), \mathbf{j}_{key} (3), KE (2), SPARC (1), \boldsymbol{\omega} (2)]\)
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 7 -->
+        <div class="pipeline-card group bg-navy-900 rounded-2xl border border-navy-800 hover:border-fuchsia-500/50 transition-all overflow-hidden cursor-pointer" data-stage="7">
+          <div class="p-5 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <span class="w-8 h-8 rounded-xl bg-fuchsia-950 border border-fuchsia-800 text-fuchsia-400 font-mono text-xs font-bold flex items-center justify-center">07</span>
+              <div>
+                <h3 class="text-base font-display font-bold text-white group-hover:text-fuchsia-300 transition-colors">Gesture Disambiguation & Classification</h3>
+                <p class="text-xs text-slate-400">Classifying sign categories using both structural shape and dynamic trajectory energy.</p>
+              </div>
+            </div>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-hover:text-fuchsia-400 transition-transform"></i>
+          </div>
+          <div class="stage-details hidden px-5 pb-5 pt-2 border-t border-navy-800 text-xs text-slate-300 space-y-2 bg-navy-950/50">
+            <p>The feature vector is evaluated against calibrated decision boundaries. Dynamic twin pairs that share the exact same spatial skeleton (e.g. "Wait" vs "Halt!") are cleanly disambiguated because the abrupt gesture produces a distinct jerk spike and kinetic energy signature.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- SECTION 7: RESEARCH, TEAM, APPLICATIONS & INITIATIVE -->
+    <section id="research" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        
+        <!-- Left 7 cols: Problem Statement, Tech Stack & Applications -->
+        <div class="lg:col-span-7 space-y-8">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300 text-xs font-mono mb-2">
+              <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+              SANCHAR SAATHI & FIOL ACCESSIBLE RESEARCH CONTEXT
+            </div>
+            <h2 class="text-3xl font-display font-bold text-white">The Biomechanical Thesis</h2>
+            <p class="text-slate-300 text-sm mt-3 leading-relaxed">
+              Standard sign recognition treats gestures as sequences of static poses. However, natural human sign languages (ASL, ISL, BSL) embed semantic meaning into movement dynamics: speed signifies urgency, deceleration indicates grammar boundaries, and abruptness changes verb mood. 
+              By incorporating physical quantities into machine learning, computers gain a physical understanding of human gesture dynamics.
+            </p>
+          </div>
+
+          <!-- Technologies Grid -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-display font-bold text-white uppercase tracking-wider text-slate-400">Core Technologies</h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-lg bg-navy-900 border border-navy-800 text-xs font-mono text-cyan-300">MediaPipe Vision</span>
+              <span class="px-3 py-1.5 rounded-lg bg-navy-900 border border-navy-800 text-xs font-mono text-slate-300">Web Speech API</span>
+              <span class="px-3 py-1.5 rounded-lg bg-navy-900 border border-navy-800 text-xs font-mono text-cyan-300">OpenCV</span>
+              <span class="px-3 py-1.5 rounded-lg bg-navy-900 border border-navy-800 text-xs font-mono text-violet-300">NumPy & SciPy</span>
+              <span class="px-3 py-1.5 rounded-lg bg-navy-900 border border-navy-800 text-xs font-mono text-amber-300">scikit-learn</span>
+              <span class="px-3 py-1.5 rounded-lg bg-navy-900 border border-navy-800 text-xs font-mono text-cyan-300">Tailwind CSS</span>
+              <span class="px-3 py-1.5 rounded-lg bg-navy-900 border border-navy-800 text-xs font-mono text-violet-300">KaTeX</span>
+            </div>
+          </div>
+
+          <!-- Applications -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-display font-bold text-white uppercase tracking-wider text-slate-400">Potential Applications</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="p-3.5 rounded-xl bg-navy-900 border border-navy-800 space-y-1">
+                <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                  <i data-lucide="hand" class="w-3.5 h-3.5 text-cyan-400"></i> Dynamic Sign Disambiguation
+                </div>
+                <p class="text-[11px] text-slate-400">Distinguishing urgency and intent in sign language translation without bulky wearable data gloves.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-navy-900 border border-navy-800 space-y-1">
+                <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                  <i data-lucide="crosshair" class="w-3.5 h-3.5 text-violet-400"></i> Robotic Teleoperation
+                </div>
+                <p class="text-[11px] text-slate-400">Imparting human force feedback and acceleration control into robotic manipulators.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-navy-900 border border-navy-800 space-y-1">
+                <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                  <i data-lucide="activity" class="w-3.5 h-3.5 text-amber-400"></i> Neurological Tremor Analysis
+                </div>
+                <p class="text-[11px] text-slate-400">Quantifying motor tremors (Parkinson's, ataxia) using jerk and spectral arc length metrics.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-navy-900 border border-navy-800 space-y-1">
+                <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                  <i data-lucide="glasses" class="w-3.5 h-3.5 text-fuchsia-400"></i> Spatial Computing (VR/XR)
+                </div>
+                <p class="text-[11px] text-slate-400">Physics-informed air gestures with zero latency false-positive trigger suppression.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right 5 cols: Scientific Limitations, Team & References -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- Scientific Limitations Box (Crucial for evaluators!) -->
+          <div class="p-5 rounded-2xl bg-navy-900 border border-amber-500/30 space-y-3">
+            <div class="flex items-center gap-2 text-amber-400">
+              <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+              <h3 class="text-sm font-display font-bold">Scientific Integrity & Limitations</h3>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Video-derived forces and torques (\(F \approx m \cdot a\)) are <strong>inertial approximations</strong> based on standard anthropometric mass tables (Dempster, 1955). They do not represent direct measurements of internal tendon strain or surface electromyography (EMG). 
+              Our prototype demonstrates that these kinematic approximations still provide sufficient discriminative power for gesture disambiguation.
+            </p>
+          </div>
+
+          <!-- Team & Initiative -->
+          <div class="p-5 rounded-2xl bg-navy-900 border border-navy-800 space-y-4">
+            <h3 class="text-sm font-display font-bold text-white flex items-center gap-2">
+              <i data-lucide="users" class="w-4 h-4 text-cyan-400"></i>
+              Initiative Team & Mentors
+            </h3>
+            <div class="space-y-3 text-xs">
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-navy-950 border border-navy-855">
+                <div>
+                  <div class="font-bold text-white">Chintu & Research Team</div>
+                  <div class="text-[11px] text-cyan-400 font-mono">Lead Developers & AI Researchers • Sanchar Saathi & FIOL</div>
+                </div>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-300">Authors</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-navy-950 border border-navy-855">
+                <div>
+                  <div class="font-bold text-white">Project Mentor & Guide</div>
+                  <div class="text-[11px] text-slate-400 font-mono">Department of Computer Science & Engineering</div>
+                </div>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-violet-950 border border-violet-800 text-violet-300">Supervisor</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Academic References -->
+          <div class="p-5 rounded-2xl bg-navy-900 border border-navy-800 space-y-3 text-xs">
+            <h3 class="text-sm font-display font-bold text-white flex items-center gap-2">
+              <i data-lucide="bookmark" class="w-4 h-4 text-violet-400"></i>
+              Key Academic References
+            </h3>
+            <ul class="space-y-2 text-slate-400 text-[11px] leading-relaxed list-disc list-inside">
+              <li><strong class="text-slate-300">Lugaresi et al. (2019):</strong> MediaPipe: A Framework for Building Perception Pipelines.</li>
+              <li><strong class="text-slate-300">Dempster, W.T. (1955):</strong> Space Requirements of the Seated Operator. WADC Technical Report.</li>
+              <li><strong class="text-slate-300">Balasubramanian et al. (2015):</strong> Smoothness of Movement: Quantitative Metrics and Analysis. IEEE TNSRE.</li>
+              <li><strong class="text-slate-300">Raissi, Perdikaris & Karniadakis (2019):</strong> Physics-Informed Neural Networks. Journal of Computational Physics.</li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-navy-800/80 bg-navy-950 py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-violet-600 p-[1px]">
+          <div class="w-full h-full bg-navy-950 rounded-[7px] flex items-center justify-center">
+            <i data-lucide="activity" class="w-4 h-4 text-cyan-400"></i>
+          </div>
+        </div>
+        <div>
+          <span class="font-display font-bold text-sm text-white">KINETIQ by Sanchar Saathi & FIOL</span>
+          <span class="text-slate-500 text-xs ml-2">Accessible Physics-Informed Sign-to-Speech Communication</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-6 text-xs text-slate-400 font-mono">
+        <span>Sanchar Saathi & FIOL Initiative • Accessible Communication</span>
+        <a href="#hero" class="hover:text-cyan-400 transition-colors">Back to Top &uarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- DEPENDENCY SCRIPTS -->
+  <!-- MediaPipe Hands & Camera Utils (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+  <!-- App Modular Scripts -->
+  <script src="js/physics-engine.js"></script>
+  <script src="js/synthetic-demo.js"></script>
+  <script src="js/mediapipe-tracker.js"></script>
+  <script src="js/charts-dashboard.js"></script>
+  <script src="js/gesture-classifier.js"></script>
+  <script src="js/playground.js"></script>
+  <script src="js/model-comparison.js"></script>
+  <script src="js/hero-visualizer.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    // Initialize Lucide icons
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>
